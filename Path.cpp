@@ -6,10 +6,11 @@ Path::Path(){
 Path::~Path(){
 }
 int Path::compareC(){
+    return 0;
 }
-int Path::totalPropogationDelay(){
-}
-float Path::totalLatency(){
-}
+//int Path::totalPropogationDelay(){
+//}
+//float Path::totalLatency(){
+//}
 void Path::display(){
 }

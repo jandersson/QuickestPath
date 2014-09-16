@@ -7,18 +7,18 @@ using namespace std;
 
 class Path{
 private:
-	std::vector<Link> linkList;
-	int lowestCapacity;
-	int totalPropogationDelay;
-	float totalLatency;
-public:	
-	Path();
-	~Path();
-	int compareC();
-	int totalPropogationDelay();
-	float totalLatency();
-	void display();
+    std::vector<Link> linkList;
+    int lowestCapacity;
+    int totalPropogationDelay;
+    float totalLatency;
+public:
+    Path();
+    ~Path();
+    int compareC();
+    //int totalPropogationDelay();
+    //float totalLatency();
+    void display();
 
 };
 
-#endif PATH_H
+#endif
