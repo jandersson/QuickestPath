@@ -3,6 +3,7 @@
 Link::Link(){
 }
 
-void Link::calculateDelay(){
+Link::~Link(){
+
 }
 
