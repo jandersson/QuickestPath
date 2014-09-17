@@ -86,9 +86,9 @@ int main(){
 
                     num_nodes = ring_size;
 
-                    //FUNCTION CALLS HERE
+                    cout  << "Generating a ring graph" << endl; //DEBUGGING
                     vector<vector<int> > ring_dist_graph = generateRingGraph(listOfLinks);
-
+                    cout << "Computing Shortest Path" << endl; //DEBUGGING
                     Dijkstra(ring_dist_graph, source, num_nodes);
                     vector<int> new_path = calculatePath(destination, source, parent, path, num_nodes);
                     print_path(new_path);
@@ -106,7 +106,6 @@ int main(){
                         case 2:
                             new_topo = true;
                             more = false;
-                            break;
                         default:
                             cout << "Not a valid input; Assuming Previous" << endl;
                             break;
@@ -230,27 +229,30 @@ int calculateMinDistance(int dist[], bool visit[], int num_nodes){
 }
 
 void print_path(vector<int> path){
-
+// Display function for application
     cout << "\nPath is:\t " << endl;
     for (std::vector<int>::reverse_iterator it = path.rbegin(); it != path.rend(); it++){
         cout << *it;
     }
+    cout << endl;
 }
 
 vector<int> calculatePath(int dest, int src, int parent[], vector<int> path, int num_nodes){
-
-    if (src == dest){
+// Calculate the best path from a source node to a destination node
+    if (src == dest) {
         cout << "\nSource is equal to destination!\n";
         return path;
     }
+    cout << "Adding node " << dest << " to the path." << endl;
     path.push_back(dest);
     bool found = false;
     while (found == false){
         for (int i = 0; i < num_nodes; i++){
+            cout << "i: " << i << endl;
             if (i == dest){
-
                 path.push_back(parent[i]);
                 dest = parent[i];
+                cout << "Adding node " << dest << " to the path." << endl;
                 if (parent[i] == src){
                     found = true;
                     return path;
@@ -258,55 +260,50 @@ vector<int> calculatePath(int dest, int src, int parent[], vector<int> path, int
             }
         }
     }
-
     return path;
-
 }
 
+
+vector< vector<int> > generateRingGraph(vector<Link> listOfLinks){
 // The following steps describe the functions "generateRingGraph" and "generateTorusGraph"
 //1. Iterate throght the vector to get to a Link.
 //2. Dimension 1 of dist_graph is the start_of_link node.
 //3. Dimension 2 of dist_graph is the end_of_link node.
 //4. Find the end_of_link spot in array and enter the propogation_delay
 //5. Reverse the array index so that the end_of_link is the first index and the start_of_link is the second index (fliping steps 1-3) to complete the graph
-vector<vector<int> > generateRingGraph(vector<Link> listOfLinks){
+    cout << "Creating a ring graph vector" << endl;
     vector<vector<int> > ring_dist_graph;
+    cout << "Resizing the ring graph vector" << endl;
     ring_dist_graph.resize(ring_size, vector<int>(ring_size));
-    //This loop does steps 1-5 above.
+    cout << "Populating ring graph vector" << endl;
     for (std::vector<Link>::const_iterator it = listOfLinks.begin(); it != listOfLinks.end(); it++){
-
-        for (int i = 0; i < ring_size; i++){
-            ring_dist_graph[it->start_of_link][it->end_of_link] = it->propagation_delay;
-            ring_dist_graph[it->end_of_link][it->start_of_link] = it->propagation_delay;
-        }
+        cout << "Creating bidirectional link with nodes: " << endl; //DEBUGGING
+        cout << "Start: " << it->start_of_link << "\t End: " << it->end_of_link << endl; //DEBUGGING
+        ring_dist_graph[it->start_of_link][it->end_of_link] = it->propagation_delay;
+        cout << "Start: " << it->end_of_link << "\t End: " << it->start_of_link << endl; //DEBUGGING
+        ring_dist_graph[it->end_of_link][it->start_of_link] = it->propagation_delay;
     }
-
     //The above loop leaves empty spaces in the graph for distances from all nodes to themselves.  Since that value is always 0, this loop populates the graph with 0s for those distances.
     for (int i = 0; i < ring_size; i++){
         ring_dist_graph[i][i] = 0;
     }
-
     return ring_dist_graph;
-
 }
+
 vector<vector<int> > generateTorusGraph(vector<Link> listOfLinks){
     vector<vector<int> > torus_dist_graph;
     torus_dist_graph.resize((torus_size*4), vector<int>(torus_size*4));
     //This loop does steps 1-5 above.
     for (std::vector<Link>::const_iterator it = listOfLinks.begin(); it != listOfLinks.end(); it++){
-
         for (int i = 0; i < torus_size; i++){
             torus_dist_graph[it->start_of_link][it->end_of_link] = it->propagation_delay;
             torus_dist_graph[it->end_of_link][it->start_of_link] = it->propagation_delay;
         }
     }
-
     //The above loop leaves empty spaces in the graph for distances from all nodes to themselves.  Since that value is always 0, this loop populates the graph with 0s for those distances.
     for (int i = 0; i < torus_size; i++){
-
         torus_dist_graph[i][i] = 0;
     }
-
     return torus_dist_graph;
 }
 //
