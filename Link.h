@@ -4,16 +4,15 @@
 
 class Link{
 public:
-    int propagation_delay;
-    int capacity;
-    int start_of_link;
-    int end_of_link;
+	int propagation_delay;
+	int capacity;
+	int start_of_link;
+	int end_of_link;
 
-    Link();
-    ~Link();
-    //Link(int propagation_delay, int capacity, int start_of_link, int end_of_link);
-    //~Link();
-    void calculateDelay();
+	Link();
+	Link(int propagation_delay, int capacity, int start_of_link, int end_of_link);
+	~Link();
+	void calculateDelay();
 
 };
 

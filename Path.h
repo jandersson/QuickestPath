@@ -5,20 +5,14 @@ using namespace std;
 #include <vector>
 #include "Link.h"
 
-class Path{
-private:
-    std::vector<Link> linkList;
-    int lowestCapacity;
-    int totalPropogationDelay;
-    float totalLatency;
-public:
-    Path();
-    ~Path();
-    int compareC();
-    //int totalPropogationDelay();
-    //float totalLatency();
-    void display();
+struct Path{
 
+	std::vector<int> path;
+	float totalLatency;
+
+	Path();
+	~Path();
+	void display();
 };
 
 #endif
