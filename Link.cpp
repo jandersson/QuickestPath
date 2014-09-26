@@ -8,6 +8,7 @@ Link::Link(int prop, int cap, int start, int end){
 	capacity = cap;
 	start_of_link = start;
 	end_of_link = end;
+	capacityChecked = false;
 }
 
 Link::~Link(){

@@ -8,7 +8,7 @@ public:
 	int capacity;
 	int start_of_link;
 	int end_of_link;
-
+	bool capacityChecked;
 	Link();
 	Link(int propagation_delay, int capacity, int start_of_link, int end_of_link);
 	~Link();
