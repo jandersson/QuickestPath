@@ -1,7 +1,6 @@
 //Quickest Path Algorithm
 //For ECE427
 //By Jonas Andersson
-#include <sstream>
 #include <iostream>
 #include <fstream>
 #include "Link.h"
@@ -138,13 +137,13 @@ int main(){
 						cin >> destination;
 						cout << "Please enter the packet size in bytes: " << endl;
 						cin >> packetSize;
-						int num_nodes = ring_size;
+						int num_nodes = mesh_size;
 						quickestPath(listOfLinks, source, destination, num_nodes, packetSize);
 					}
 					else{
 						cout << "Unable to open that file...";
 					}
-					
+					continue;
 		}
 		default: {
 					cout << endl << "Not a valid choice" << endl;
@@ -156,8 +155,8 @@ int main(){
 
 int Dijkstra(vector<vector<int> > graph, int source, int num_nodes, int dest){
 
-	int dist[ring_size]; // Array to hold distances to nodes from source
-	bool visit[ring_size]; // Array to determine if a node is visited
+	int dist[mesh_size]; // Array to hold distances to nodes from source
+	bool visit[mesh_size]; // Array to determine if a node is visited
 
 	for (int i = 0; i < num_nodes; i++){
 		dist[i] = INT_MAX; // Set all distances to infinite (INT_MAX will effectively work as infinity)
