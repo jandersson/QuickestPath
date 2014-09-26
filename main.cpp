@@ -1,8 +1,9 @@
 //Quickest Path Algorithm
 //For ECE427
 //By Jonas Andersson
-
+#include <sstream>
 #include <iostream>
+#include <fstream>
 #include "Link.h"
 #include "Path.h"
 #include <string>
@@ -11,7 +12,7 @@
 #define ring_size 4
 #define mesh_size 8
 using namespace std;
-
+//TODO: The number of nodes is hardcoded into dijkstras function, allow the user to input the #
 //Parent array keeps track of the best neighboring node which is used to find the shortest path.
 //Parent is global so it does not need to be passed and returned from several functions as a pointer
 int parent[64];
@@ -39,7 +40,8 @@ int main(){
 	int topo_choice;
 
 	while (more){
-		std::cout << "Which topology would you like to use? \n[1: Graph1 (" << ring_size << " nodes) | 2: Graph2 (" << mesh_size << " nodes) | 3: exit]" << endl;
+		std::cout << "Which topology would you like to use? \n[1: Graph1 (" << ring_size << " nodes) | 2: Graph2 ("
+			<< mesh_size << " nodes) | 3: Provide CSV File | 0: exit]" << endl;
 		cin >> topo_choice;
 
 		switch (topo_choice){
@@ -51,11 +53,10 @@ int main(){
 				   Link link3 = Link(13, 50, 1, 3);
 				   Link link4 = Link(12, 100, 0, 1);
 				   Link link5 = Link(1, 90, 1, 2);
-
 				   listOfLinks.push_back(link1);
 				   listOfLinks.push_back(link2);
 				   listOfLinks.push_back(link3);
-				   listOfLinks.push_back(link4);	
+				   listOfLinks.push_back(link4);
 				   listOfLinks.push_back(link5);
 
 				   cout << endl << "Please enter the source: " << endl;
@@ -107,19 +108,56 @@ int main(){
 
 				   continue;
 		}
-		case 3:
-			more = false;
-		default:
-			cout << endl << "Not a valid choice" << endl;
-			continue;
+		case 0:{
+				   more = false;
+		}
+		case 3: {
+					cout << "Type the name of the file including extension: ";
+					string fileName = "";  //User inputs filename
+					cin >> fileName;
+					ifstream graphFile; //Open user input graph file
+					string line = "";
+					vector<Link> listOfLinks;
+					graphFile.open(fileName);
+					if (graphFile.is_open()){
+						while (getline(graphFile, line, ',')){
+							int start = atoi(line.c_str());
+							getline(graphFile, line, ',');
+							int end = atoi(line.c_str());
+							getline(graphFile, line, ',');
+							int delay = atoi(line.c_str());
+							getline(graphFile, line, ',');
+							int capacity = atoi(line.c_str());
+							Link new_link = Link(delay, capacity, start - 1, end - 1);
+							listOfLinks.push_back(new_link);
+						}
+						graphFile.close();
+						cout << "Please enter the source: " << endl;
+						cin >> source;
+						cout << "Please enter the destination: " << endl;
+						cin >> destination;
+						cout << "Please enter the packet size in bytes: " << endl;
+						cin >> packetSize;
+						int num_nodes = ring_size;
+						quickestPath(listOfLinks, source, destination, num_nodes, packetSize);
+					}
+					else{
+						cout << "Unable to open that file...";
+					}
+					
+		}
+		default: {
+					cout << endl << "Not a valid choice" << endl;
+					continue;
+		}
 		}
 	}
 }
 
 int Dijkstra(vector<vector<int> > graph, int source, int num_nodes, int dest){
 
-	int dist[mesh_size]; // Array to hold distances to nodes from source
-	bool visit[mesh_size]; // Array to determine if a node is visited
+	int dist[ring_size]; // Array to hold distances to nodes from source
+	bool visit[ring_size]; // Array to determine if a node is visited
 
 	for (int i = 0; i < num_nodes; i++){
 		dist[i] = INT_MAX; // Set all distances to infinite (INT_MAX will effectively work as infinity)
