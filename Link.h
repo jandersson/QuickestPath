@@ -16,4 +16,4 @@ public:
 
 };
 
-#endif LINK_H
+#endif

@@ -7,6 +7,7 @@
 #include "Path.h"
 #include <string>
 #include <vector>
+#include <stdlib.h>
 #include "limits.h"
 #define ring_size 4
 #define mesh_size 8
@@ -216,7 +217,7 @@ vector<int> calculatePath(int dest, int src, int parent[], int num_nodes){
 	return path;
 }
 
-vector<vector<int>> generateGraph(vector<Link> listOfLinks, int num_nodes){
+vector< vector< int > > generateGraph(vector<Link> listOfLinks, int num_nodes){
 	// The following steps describe the functions "generateGraph"
 	//1. Iterate throght the vector to get to a Link.
 	//2. Dimension 1 of dist_graph is the start_of_link node.
@@ -310,7 +311,7 @@ void quickestPath(vector<Link> listOfLinks, int source, int dest, int num_nodes,
 		}
 
 		//Running the Dijkstra functions to find the best path
-		vector<vector<int>> new_graph = generateGraph(new_listOfLinks, num_nodes);
+		vector<vector<int> > new_graph = generateGraph(new_listOfLinks, num_nodes);
 		propDelay = Dijkstra(new_graph, source, num_nodes, dest);
 		vector<int> new_path = calculatePath(dest, source, parent, num_nodes);
 
